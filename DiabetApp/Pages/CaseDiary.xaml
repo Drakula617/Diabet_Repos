@@ -1,0 +1,213 @@
+﻿<Page x:Class="DiabetApp.Pages.CaseDiary"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DiabetApp.Pages"
+      xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      Height="1080" Width="1920"
+      Title="CaseDiary" Background="White" WindowWidth="1920" WindowHeight="1080" ShowsNavigationUI="False" MinWidth="1920" MinHeight="1080">
+
+    <StackPanel HorizontalAlignment="Center"  Orientation="Vertical">
+            <mat:Card Height="100">
+                <TextBlock Text="Журнал" FontSize="30" FontWeight="Bold" Opacity="0.8" Margin="20">
+                    
+                </TextBlock>
+            </mat:Card>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 0">
+            <TextBlock Text="{Binding SummDose, UpdateSourceTrigger=PropertyChanged, StringFormat=0.0 Ед/сутки}" HorizontalAlignment="Center" Margin="50" FontSize="20" ></TextBlock>
+
+            <Button x:Name="anketebut" Content="Профили" Width="200" Height="50" Margin="30" FontSize="20" Click="anketebut_Click" Cursor="Hand"></Button>
+            <DatePicker SelectedDate="{Binding Selected_DateTime, UpdateSourceTrigger=PropertyChanged}" Margin="30" FontSize="20" Width="200" Height="100">
+                        
+                    </DatePicker>
+            <Button x:Name="addRow" Content="+" FontSize="20" Width="70" Height="50" Margin="30" Click="addRow_Click"></Button>
+            <Button Content="Графики" FontSize="20" Width="200" Height="50"   Margin="30" Click="Button_Click_1"   Cursor="Hand"></Button>
+        </StackPanel>
+
+        <DataGrid x:Name="LineLIst" Width="1800" Height="650" Margin="40 0 0 0" IsReadOnly="True" BorderThickness="2"  AllowDrop="False" ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding Diary_Lines, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False"  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Time}" FontSize="20">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Время" FontSize="20">
+                            
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn Width="{Binding ElementName=ProdList, Path=Width}" x:Name="ProductColumn">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Питание" FontSize="20">
+
+                        </TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate x:Name="ProductViewTemplate">
+                            <StackPanel Orientation="Horizontal" >
+                                <ListView ItemsSource="{Binding Diary_Product}" x:Name="ProdList" HorizontalAlignment="Left" >
+                                        <ListView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel MaxWidth="500"/>
+                                            </ItemsPanelTemplate>
+                                        </ListView.ItemsPanel>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                            <Border CornerRadius="10" Width="{Binding ElementName=ProductNameText, Path=Width}" Height="70" Background="{Binding Product.ColorIndex}">
+                                                <StackPanel Orientation="Horizontal" Margin="10">
+                                                        <StackPanel Orientation="Vertical" Height="100">
+                                                        <TextBlock Text="{Binding Product.Name}" x:Name="ProductNameText" FontWeight="Bold" Foreground="{Binding Product.ColorText}" ></TextBlock>
+                                                        <TextBlock Text="{Binding Grams, StringFormat=0 грамм}" Foreground="{Binding Product.ColorText}"></TextBlock>
+                                                        <TextBlock Text="{Binding HE, StringFormat=0.0 хе}" Foreground="{Binding Product.ColorText}"></TextBlock>
+                                                        </StackPanel>
+                                                        <Button x:Name="removeprod" Margin="5 0 0 0" mat:ShadowAssist.ShadowDepth="Depth0" BorderBrush="Coral" Background="Coral" Width="40" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Click="removeprod_Click">
+                                                                x
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                              <Button Content="+" FontSize="20" Width="45" Height="40" HorizontalAlignment="Right" Click="Button_Click"></Button>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridTextColumn Binding="{Binding HE}">
+                    
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="ХЕ" FontSize="30">
+                            
+                        </TextBlock>
+                    </DataGridTextColumn.Header>
+                   
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="ХЕ" FontSize="20"></TextBlock>
+                    </DataGridTemplateColumn.Header>
+                        
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel    HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                                <TextBlock x:Name="HeText"
+                                           FontSize="20"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding He, UpdateSourceTrigger=PropertyChanged, StringFormat=0.0}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Глюкоза" FontSize="20" Width="120">
+
+                        </TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox x:Name="glucoseText"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                     VerticalContentAlignment="Center" 
+                                     HorizontalContentAlignment="Center" 
+                                     LostFocus="glucoseText_LostFocus" GotFocus="glucoseText_GotFocus"
+                                     Text="{Binding Glucose, UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False, StringFormat=0.0}" FontSize="20"></TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                <DataGridTextColumn Binding="{Binding Dose, UpdateSourceTrigger=PropertyChanged, StringFormat=0.0}"
+                                    FontSize="20">
+                    <DataGridTextColumn.Header>
+                            <StackPanel    HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                            <TextBlock Text="Доза" FontSize="20" VerticalAlignment="Center">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Binding="{Binding DoseHe, UpdateSourceTrigger=PropertyChanged, StringFormat=0.0}"
+                                    FontSize="20" Width="100">
+                    <DataGridTextColumn.Header>
+                        <StackPanel    HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                            <TextBlock Text="На еду" FontSize="20" VerticalAlignment="Center">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding DoseLower, UpdateSourceTrigger=PropertyChanged, StringFormat=0.0}"
+                                    FontSize="20" Width="170">
+                    <DataGridTextColumn.Header>
+                        <StackPanel    HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                            <TextBlock Text="На понижение" FontSize="20" VerticalAlignment="Center">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ActiveDose, UpdateSourceTrigger=PropertyChanged, StringFormat=0.0}"
+                                    FontSize="20"  Width="140">
+                    <DataGridTextColumn.Header>
+                        <StackPanel    HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+                            <TextBlock Text="Активный" FontSize="20" VerticalAlignment="Center">
+
+                            </TextBlock>
+                        </StackPanel>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Width="140">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Понижать?" FontSize="20"></TextBlock>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox x:Name="checkDose"  IsChecked="{Binding IsDoseLower}" Click="checkDose_Click"  Width="30" Height="30" FontSize="20">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="calculation" FontSize="20" Click="calculation_Click_1">
+                                <Image Source="C:\Users\gidin\source\repos\DiabetApp\DiabetApp\Images\PurpleCalculation2.png" Width="18" Height="35"></Image>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="x" Background="Red" FontSize="20" Width="45" Height="40" HorizontalAlignment="Right" Click="Button_Click_2"></Button>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+        
+</Page>

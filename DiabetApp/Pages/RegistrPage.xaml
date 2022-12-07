@@ -1,0 +1,108 @@
+﻿<Page x:Class="DiabetApp.Pages.RegistrPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DiabetApp.Pages"
+      mc:Ignorable="d"  xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      d:DesignHeight="700" d:DesignWidth="1200"
+      Title="RegistrPage" Background="White" ShowsNavigationUI="False">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Width" Value="150"></Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <DockPanel Margin="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border CornerRadius="60" BorderBrush="Black" Background="White" BorderThickness="3" DockPanel.Dock="Top" Width="800" Height="650">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock FontSize="34" Margin="0,0,0,30" Width="220" FontWeight="Bold" Opacity="0.8" HorizontalAlignment="Center" VerticalAlignment="Center">Регистрация</TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition>
+                                    
+                                </ColumnDefinition>
+                                <ColumnDefinition>
+                                    
+                                </ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Vertical" Cursor="Arrow">
+                                      <TextBox x:Name="FName"
+                                      MaxLength="16"
+                                      materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                      materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                      materialDesign:TextFieldAssist.HasClearButton="True"
+                                      materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                      materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                      materialDesign:HintAssist.Hint="Имя" Width="220" Margin="0 0 0 20"
+                                      FontSize="18" TextChanged="FName_TextChanged" Cursor="Arrow" ></TextBox>
+                                             <TextBox x:Name="LName"
+                                             materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                             materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                             materialDesign:TextFieldAssist.HasClearButton="True"
+                                             materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                             materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                             materialDesign:HintAssist.Hint="Фамилия" Width="220" Margin="0 0 0 20"
+                                             FontSize="18" TextChanged="FName_TextChanged"></TextBox>
+                                         <TextBox x:Name="MName"
+                                         materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                         materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                         materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                         materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                         materialDesign:HintAssist.Hint="Отчество" Width="220" Margin="0 0 0 20"
+                                         FontSize="18" TextChanged="FName_TextChanged" Cursor="Arrow"></TextBox>
+
+
+                                <TextBox x:Name="weigth"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="Вес(кг)" Width="220" Margin="0 0 0 20"
+                                     FontSize="18" Cursor="Arrow"></TextBox>
+
+
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="100 0 0 0">
+                               
+
+                                <TextBox x:Name="login"
+                         materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                         materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:TextFieldAssist.HasFilledTextField="True"
+                         materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                         materialDesign:HintAssist.Hint="Логин" Width="220" Margin="0 0 0 20"
+                         FontSize="18"></TextBox>
+
+                                    <PasswordBox x:Name="password"
+                                                                                                   materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                         materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:TextFieldAssist.HasFilledTextField="True"
+                         materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                         materialDesign:HintAssist.Hint="Пароль" Width="220" Margin="0 0 0 20"
+                         FontSize="18" Cursor="Arrow"></PasswordBox>
+
+
+
+                            </StackPanel>
+                        </Grid>
+                        <Button x:Name="Registr" Content="Регистрация" Height="40" FontWeight="Bold" Click="Registr_Click" Cursor="Hand"></Button>
+                        <Button x:Name="back" Content="Назад" Background="Transparent"
+                        BorderThickness="0" Foreground="Blue" FontWeight="Regular"></Button>
+                        
+                </StackPanel>
+                </Border>
+
+            </DockPanel>
+            <StackPanel>
+
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>

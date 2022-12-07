@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище DiabetDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Diary_Line">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Time" Type="time" Precision="7" />
+          <Property Name="Glucose" Type="real" />
+          <Property Name="ID_GeneralDiary_Person" Type="int" />
+          <Property Name="IsDoseLower" Type="bit" />
+        </EntityType>
+        <EntityType Name="Diary_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Diary_Line" Type="int" />
+          <Property Name="ID_Product" Type="int" />
+          <Property Name="Grams" Type="real" />
+        </EntityType>
+        <EntityType Name="Dose_Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Profile" Type="int" />
+          <Property Name="ID_Type_Coefficient" Type="int" />
+          <Property Name="Time_Begin" Type="time" Precision="7" />
+          <Property Name="Time_End" Type="time" Precision="7" />
+          <Property Name="Coefficient" Type="real" />
+        </EntityType>
+        <EntityType Name="GeneralDiary_Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Person" Type="int" />
+          <Property Name="Date" Type="date" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Weight" Type="real" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" />
+          <Property Name="Glycemic_Index" Type="real" />
+          <Property Name="Calories" Type="real" />
+          <Property Name="Protein" Type="real" />
+          <Property Name="Fats" Type="real" />
+          <Property Name="Carbohydrates" Type="real" />
+          <Property Name="ID_Type_Product" Type="int" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="ID_Person" Type="int" />
+          <Property Name="MaxGlucose" Type="real" />
+          <Property Name="MinGlucose" Type="real" />
+          <Property Name="Sensitivity" Type="real" />
+        </EntityType>
+        <EntityType Name="Type_Coefficient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Type_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Diary_Food_Diary_Day">
+          <End Role="Diary_Line" Type="Self.Diary_Line" Multiplicity="0..1" />
+          <End Role="Diary_Product" Type="Self.Diary_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Diary_Line">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Diary_Product">
+              <PropertyRef Name="ID_Diary_Line" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Diary_Food_Food">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Diary_Product" Type="Self.Diary_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Diary_Product">
+              <PropertyRef Name="ID_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Diary_Line_GeneralDiary_Person">
+          <End Role="GeneralDiary_Person" Type="Self.GeneralDiary_Person" Multiplicity="0..1" />
+          <End Role="Diary_Line" Type="Self.Diary_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralDiary_Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Diary_Line">
+              <PropertyRef Name="ID_GeneralDiary_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dose_Profile_Type_Coefficient">
+          <End Role="Type_Coefficient" Type="Self.Type_Coefficient" Multiplicity="0..1" />
+          <End Role="Dose_Profile" Type="Self.Dose_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type_Coefficient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Dose_Profile">
+              <PropertyRef Name="ID_Type_Coefficient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GeneralDiary_Person_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="GeneralDiary_Person" Type="Self.GeneralDiary_Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GeneralDiary_Person">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Type_Product">
+          <End Role="Type_Product" Type="Self.Type_Product" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type_Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ID_Type_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Profile_Carb_Coef_Profile">
+          <End Role="Profile" Type="Self.Profile" Multiplicity="0..1" />
+          <End Role="Dose_Profile" Type="Self.Dose_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profile">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Dose_Profile">
+              <PropertyRef Name="ID_Profile" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Profile_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище DiabetDBModelContainer">
+          <EntitySet Name="Diary_Line" EntityType="Self.Diary_Line" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Diary_Product" EntityType="Self.Diary_Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dose_Profile" EntityType="Self.Dose_Profile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GeneralDiary_Person" EntityType="Self.GeneralDiary_Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profile" EntityType="Self.Profile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type_Coefficient" EntityType="Self.Type_Coefficient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type_Product" EntityType="Self.Type_Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Diary_Food_Diary_Day" Association="Self.FK_Diary_Food_Diary_Day">
+            <End Role="Diary_Line" EntitySet="Diary_Line" />
+            <End Role="Diary_Product" EntitySet="Diary_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diary_Food_Food" Association="Self.FK_Diary_Food_Food">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Diary_Product" EntitySet="Diary_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diary_Line_GeneralDiary_Person" Association="Self.FK_Diary_Line_GeneralDiary_Person">
+            <End Role="GeneralDiary_Person" EntitySet="GeneralDiary_Person" />
+            <End Role="Diary_Line" EntitySet="Diary_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dose_Profile_Type_Coefficient" Association="Self.FK_Dose_Profile_Type_Coefficient">
+            <End Role="Type_Coefficient" EntitySet="Type_Coefficient" />
+            <End Role="Dose_Profile" EntitySet="Dose_Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GeneralDiary_Person_Person" Association="Self.FK_GeneralDiary_Person_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="GeneralDiary_Person" EntitySet="GeneralDiary_Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Type_Product" Association="Self.FK_Product_Type_Product">
+            <End Role="Type_Product" EntitySet="Type_Product" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Profile_Carb_Coef_Profile" Association="Self.FK_Profile_Carb_Coef_Profile">
+            <End Role="Profile" EntitySet="Profile" />
+            <End Role="Dose_Profile" EntitySet="Dose_Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Profile_Person" Association="Self.FK_Profile_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Profile" EntitySet="Profile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DiabetDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Diary_Line">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="Time" Precision="7" />
+          <Property Name="Glucose" Type="Single" />
+          <Property Name="ID_GeneralDiary_Person" Type="Int32" />
+          <Property Name="IsDoseLower" Type="Boolean" />
+          <NavigationProperty Name="Diary_Product" Relationship="Self.FK_Diary_Food_Diary_Day" FromRole="Diary_Line" ToRole="Diary_Product" />
+          <NavigationProperty Name="GeneralDiary_Person" Relationship="Self.FK_Diary_Line_GeneralDiary_Person" FromRole="Diary_Line" ToRole="GeneralDiary_Person" />
+        </EntityType>
+        <EntityType Name="Diary_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Diary_Line" Type="Int32" />
+          <Property Name="ID_Product" Type="Int32" />
+          <Property Name="Grams" Type="Single" />
+          <NavigationProperty Name="Diary_Line" Relationship="Self.FK_Diary_Food_Diary_Day" FromRole="Diary_Product" ToRole="Diary_Line" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Diary_Food_Food" FromRole="Diary_Product" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Dose_Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Profile" Type="Int32" />
+          <Property Name="ID_Type_Coefficient" Type="Int32" />
+          <Property Name="Time_Begin" Type="Time" Precision="7" />
+          <Property Name="Time_End" Type="Time" Precision="7" />
+          <Property Name="Coefficient" Type="Single" />
+          <NavigationProperty Name="Type_Coefficient" Relationship="Self.FK_Dose_Profile_Type_Coefficient" FromRole="Dose_Profile" ToRole="Type_Coefficient" />
+          <NavigationProperty Name="Profile" Relationship="Self.FK_Profile_Carb_Coef_Profile" FromRole="Dose_Profile" ToRole="Profile" />
+        </EntityType>
+        <EntityType Name="GeneralDiary_Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Person" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Diary_Line" Relationship="Self.FK_Diary_Line_GeneralDiary_Person" FromRole="GeneralDiary_Person" ToRole="Diary_Line" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_GeneralDiary_Person_Person" FromRole="GeneralDiary_Person" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="Single" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="GeneralDiary_Person" Relationship="Self.FK_GeneralDiary_Person_Person" FromRole="Person" ToRole="GeneralDiary_Person" />
+          <NavigationProperty Name="Profile" Relationship="Self.FK_Profile_Person" FromRole="Person" ToRole="Profile" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Glycemic_Index" Type="Single" />
+          <Property Name="Calories" Type="Single" />
+          <Property Name="Protein" Type="Single" />
+          <Property Name="Fats" Type="Single" />
+          <Property Name="Carbohydrates" Type="Single" />
+          <Property Name="ID_Type_Product" Type="Int32" />
+          <NavigationProperty Name="Diary_Product" Relationship="Self.FK_Diary_Food_Food" FromRole="Product" ToRole="Diary_Product" />
+          <NavigationProperty Name="Type_Product" Relationship="Self.FK_Product_Type_Product" FromRole="Product" ToRole="Type_Product" />
+        </EntityType>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Person" Type="Int32" />
+          <Property Name="MaxGlucose" Type="Single" />
+          <Property Name="MinGlucose" Type="Single" />
+          <Property Name="Sensitivity" Type="Single" />
+          <NavigationProperty Name="Dose_Profile" Relationship="Self.FK_Profile_Carb_Coef_Profile" FromRole="Profile" ToRole="Dose_Profile" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Profile_Person" FromRole="Profile" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Type_Coefficient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Dose_Profile" Relationship="Self.FK_Dose_Profile_Type_Coefficient" FromRole="Type_Coefficient" ToRole="Dose_Profile" />
+        </EntityType>
+        <EntityType Name="Type_Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Type_Product" FromRole="Type_Product" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Diary_Food_Diary_Day">
+          <End Role="Diary_Line" Type="Self.Diary_Line" Multiplicity="0..1" />
+          <End Role="Diary_Product" Type="Self.Diary_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Diary_Line">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Diary_Product">
+              <PropertyRef Name="ID_Diary_Line" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Diary_Line_GeneralDiary_Person">
+          <End Role="GeneralDiary_Person" Type="Self.GeneralDiary_Person" Multiplicity="0..1" />
+          <End Role="Diary_Line" Type="Self.Diary_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralDiary_Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Diary_Line">
+              <PropertyRef Name="ID_GeneralDiary_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Diary_Food_Food">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Diary_Product" Type="Self.Diary_Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Diary_Product">
+              <PropertyRef Name="ID_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dose_Profile_Type_Coefficient">
+          <End Role="Type_Coefficient" Type="Self.Type_Coefficient" Multiplicity="0..1" />
+          <End Role="Dose_Profile" Type="Self.Dose_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type_Coefficient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Dose_Profile">
+              <PropertyRef Name="ID_Type_Coefficient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Profile_Carb_Coef_Profile">
+          <End Role="Profile" Type="Self.Profile" Multiplicity="0..1" />
+          <End Role="Dose_Profile" Type="Self.Dose_Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profile">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Dose_Profile">
+              <PropertyRef Name="ID_Profile" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GeneralDiary_Person_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="GeneralDiary_Person" Type="Self.GeneralDiary_Person" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GeneralDiary_Person">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Profile_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="Profile" Type="Self.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Type_Product">
+          <End Role="Type_Product" Type="Self.Type_Product" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type_Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ID_Type_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DiabetDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Diary_Line" EntityType="Self.Diary_Line" />
+          <EntitySet Name="Diary_Product" EntityType="Self.Diary_Product" />
+          <EntitySet Name="Dose_Profile" EntityType="Self.Dose_Profile" />
+          <EntitySet Name="GeneralDiary_Person" EntityType="Self.GeneralDiary_Person" />
+          <EntitySet Name="Person" EntityType="Self.Person" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="Profile" EntityType="Self.Profile" />
+          <EntitySet Name="Type_Coefficient" EntityType="Self.Type_Coefficient" />
+          <EntitySet Name="Type_Product" EntityType="Self.Type_Product" />
+          <AssociationSet Name="FK_Diary_Food_Diary_Day" Association="Self.FK_Diary_Food_Diary_Day">
+            <End Role="Diary_Line" EntitySet="Diary_Line" />
+            <End Role="Diary_Product" EntitySet="Diary_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diary_Line_GeneralDiary_Person" Association="Self.FK_Diary_Line_GeneralDiary_Person">
+            <End Role="GeneralDiary_Person" EntitySet="GeneralDiary_Person" />
+            <End Role="Diary_Line" EntitySet="Diary_Line" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Diary_Food_Food" Association="Self.FK_Diary_Food_Food">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Diary_Product" EntitySet="Diary_Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dose_Profile_Type_Coefficient" Association="Self.FK_Dose_Profile_Type_Coefficient">
+            <End Role="Type_Coefficient" EntitySet="Type_Coefficient" />
+            <End Role="Dose_Profile" EntitySet="Dose_Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Profile_Carb_Coef_Profile" Association="Self.FK_Profile_Carb_Coef_Profile">
+            <End Role="Profile" EntitySet="Profile" />
+            <End Role="Dose_Profile" EntitySet="Dose_Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GeneralDiary_Person_Person" Association="Self.FK_GeneralDiary_Person_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="GeneralDiary_Person" EntitySet="GeneralDiary_Person" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Profile_Person" Association="Self.FK_Profile_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Profile" EntitySet="Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Type_Product" Association="Self.FK_Product_Type_Product">
+            <End Role="Type_Product" EntitySet="Type_Product" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DiabetDBModelContainer" CdmEntityContainer="DiabetDBEntities1">
+          <EntitySetMapping Name="Diary_Line">
+            <EntityTypeMapping TypeName="DiabetDBModel.Diary_Line">
+              <MappingFragment StoreEntitySet="Diary_Line">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Glucose" ColumnName="Glucose" />
+                <ScalarProperty Name="ID_GeneralDiary_Person" ColumnName="ID_GeneralDiary_Person" />
+                <ScalarProperty Name="IsDoseLower" ColumnName="IsDoseLower" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Diary_Product">
+            <EntityTypeMapping TypeName="DiabetDBModel.Diary_Product">
+              <MappingFragment StoreEntitySet="Diary_Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Diary_Line" ColumnName="ID_Diary_Line" />
+                <ScalarProperty Name="ID_Product" ColumnName="ID_Product" />
+                <ScalarProperty Name="Grams" ColumnName="Grams" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dose_Profile">
+            <EntityTypeMapping TypeName="DiabetDBModel.Dose_Profile">
+              <MappingFragment StoreEntitySet="Dose_Profile">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Profile" ColumnName="ID_Profile" />
+                <ScalarProperty Name="ID_Type_Coefficient" ColumnName="ID_Type_Coefficient" />
+                <ScalarProperty Name="Time_Begin" ColumnName="Time_Begin" />
+                <ScalarProperty Name="Time_End" ColumnName="Time_End" />
+                <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GeneralDiary_Person">
+            <EntityTypeMapping TypeName="DiabetDBModel.GeneralDiary_Person">
+              <MappingFragment StoreEntitySet="GeneralDiary_Person">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Person">
+            <EntityTypeMapping TypeName="DiabetDBModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="MName" ColumnName="MName" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="DiabetDBModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Glycemic_Index" ColumnName="Glycemic_Index" />
+                <ScalarProperty Name="Calories" ColumnName="Calories" />
+                <ScalarProperty Name="Protein" ColumnName="Protein" />
+                <ScalarProperty Name="Fats" ColumnName="Fats" />
+                <ScalarProperty Name="Carbohydrates" ColumnName="Carbohydrates" />
+                <ScalarProperty Name="ID_Type_Product" ColumnName="ID_Type_Product" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profile">
+            <EntityTypeMapping TypeName="DiabetDBModel.Profile">
+              <MappingFragment StoreEntitySet="Profile">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+                <ScalarProperty Name="MaxGlucose" ColumnName="MaxGlucose" />
+                <ScalarProperty Name="MinGlucose" ColumnName="MinGlucose" />
+                <ScalarProperty Name="Sensitivity" ColumnName="Sensitivity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type_Coefficient">
+            <EntityTypeMapping TypeName="DiabetDBModel.Type_Coefficient">
+              <MappingFragment StoreEntitySet="Type_Coefficient">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type_Product">
+            <EntityTypeMapping TypeName="DiabetDBModel.Type_Product">
+              <MappingFragment StoreEntitySet="Type_Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
